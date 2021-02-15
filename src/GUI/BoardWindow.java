@@ -5,6 +5,8 @@ import Engine.Pieces.Piece;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class BoardWindow extends JFrame {
     //    public Piece[][] board;
@@ -51,9 +53,28 @@ class ChessLabel extends JLabel {
     Font font = new Font("Ariel", Font.PLAIN, 24);
     Color bgLight = new Color(222, 184, 135);
     Color bgDark = new Color(139, 69, 19);
+    public boolean holding = false;
 
     ChessLabel(String s) {
         super(s);
+        addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                holding = true;
+                Thread holding = new Thread();
+                super.mousePressed(e);
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                holding = false;
+                super.mouseReleased(e);
+            }
+        });
+    }
+
+    void on_click() {
+
     }
 
     void set(int idx, int row) {
@@ -63,34 +84,3 @@ class ChessLabel extends JLabel {
         setHorizontalAlignment(SwingConstants.CENTER);
     }
 }
-
-//
-// = new ChessLabel[]{
-//
-//         // white
-//         new ChessLabel("\u2656"), new ChessLabel("\u2658"), new ChessLabel("\u2657"),
-//         new ChessLabel("\u2655"), new ChessLabel("\u2654"), new ChessLabel("\u2657"),
-//         new ChessLabel("\u2658"), new ChessLabel("\u2656"), new ChessLabel("\u2659"),
-//         new ChessLabel("\u2659"), new ChessLabel("\u2659"), new ChessLabel("\u2659"),
-//         new ChessLabel("\u2659"), new ChessLabel("\u2659"), new ChessLabel("\u2659"),
-//         new ChessLabel("\u2659"),
-//         // empty
-//         new ChessLabel(" "), new ChessLabel(" "), new ChessLabel(" "),
-//         new ChessLabel(" "), new ChessLabel(" "), new ChessLabel(" "),
-//         new ChessLabel(" "), new ChessLabel(" "), new ChessLabel(" "),
-//         new ChessLabel(" "), new ChessLabel(" "), new ChessLabel(" "),
-//         new ChessLabel(" "), new ChessLabel(" "), new ChessLabel(" "),
-//         new ChessLabel(" "), new ChessLabel(" "), new ChessLabel(" "),
-//         new ChessLabel(" "), new ChessLabel(" "), new ChessLabel(" "),
-//         new ChessLabel(" "), new ChessLabel(" "), new ChessLabel(" "),
-//         new ChessLabel(" "), new ChessLabel(" "), new ChessLabel(" "),
-//         new ChessLabel(" "), new ChessLabel(" "), new ChessLabel(" "),
-//         new ChessLabel(" "), new ChessLabel(" "),
-//         // black
-//         new ChessLabel("\u265F"), new ChessLabel("\u265F"), new ChessLabel("\u265F"),
-//         new ChessLabel("\u265F"), new ChessLabel("\u265F"), new ChessLabel("\u265F"),
-//         new ChessLabel("\u265F"), new ChessLabel("\u265F"), new ChessLabel("\u265C"),
-//         new ChessLabel("\u265E"), new ChessLabel("\u265D"), new ChessLabel("\u265B"),
-//         new ChessLabel("\u265A"), new ChessLabel("\u265D"), new ChessLabel("\u265E"),
-//         new ChessLabel("\u265C")
-//         }
