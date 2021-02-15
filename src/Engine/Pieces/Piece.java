@@ -2,6 +2,8 @@ package Engine.Pieces;
 
 import Engine.Board;
 
+import java.util.List;
+
 public abstract class Piece {
     public int x, y;
     public char side;
@@ -23,12 +25,14 @@ public abstract class Piece {
         this.piece = ' ';
     }
 
-    public abstract boolean can_move(int x, int y);
+//    public abstract boolean can_move(int x, int y);
 
-    public boolean can_move(int x, int y, boolean board_coordinates) {
-        int[] cords = Board.array_cords_to_board_cords(x, y);
-        return can_move(cords[0], cords[1]);
-    }
+//    public boolean can_move(int x, int y, boolean board_coordinates) {
+//        int[] cords = Board.array_cords_to_board_cords(x, y);
+//        return can_move(cords[0], cords[1]);
+//    }
+
+    public abstract List<int[]> get_moves();
 
     @Override
     public String toString() {

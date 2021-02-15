@@ -1,4 +1,5 @@
 package Engine;
+
 import Engine.Pieces.*;
 
 import java.util.Arrays;
@@ -6,19 +7,19 @@ import java.util.List;
 
 public class Board {
     public static final String board_setup_str = "" +
-            ". . . . . . . ." +
+            "R . . . . . . R" +
             "P P P P P P P P" +
             ". . . . . . . ." +
             ". . . . . . . ." +
             ". . . . . . . ." +
             ". . . . . . . ." +
             "p p p p p p p p" +
-            ". . . . . . . .";
+            "r . . . . . . r";
 
     public static int board_height = 8;
     public static int board_width = 8;
 
-    public static Piece[][] board;
+    public Piece[][] board;
 
     public Board() throws Exception {
         // Declaring board variables
@@ -43,7 +44,7 @@ public class Board {
 
     public void print_board() {
         // Iterate through and print board
-        for (int row = 0; row < board_height; row ++) {
+        for (int row = 0; row < board_height; row++) {
             for (int spot = 0; spot < board[row].length; spot++)
                 System.out.print(board[row][spot]);
             System.out.print("\n");
@@ -52,17 +53,23 @@ public class Board {
 
     public boolean move_piece(int pieceX, int pieceY, int toX, int toY) {
         // This takes ARRAY coordinates
-        boolean can_move = board[pieceX][pieceY].can_move(toX, toY);
-        if (!can_move)
-            return false;
-        board[toX][toY] = board[pieceX][pieceY];
-        board[pieceX][pieceY] = new Empty(pieceX, pieceY);
-        return true;
+        // Get moves from piece
+        List<int[]> spots = board[pieceX][pieceY].get_moves();
+
+        // Check if the given coordinates are part of the given moves/spots
+        for (int[] cords : spots) {
+            if (cords[0] == toX && cords[1] == toY) {
+                board[toX][toY] = board[pieceX][pieceY];
+                board[pieceX][pieceY] = new Empty(toX, toY);
+                return true;
+            }
+        }
+        return false;
     }
 
     public static int[] array_cords_to_board_cords(int x, int y) {
         // This converts array positions to actual chess positions
-        return new int[] { y, board_width - x - 1 };
+        return new int[]{y, board_width - x - 1};
     }
 
     private Piece get_piece(char character, int x, int y) {
@@ -72,6 +79,8 @@ public class Board {
         switch (Character.toLowerCase(character)) {
             case 'p':
                 return new Pawn(x, y, side, board);
+            case 'r':
+                return new Rook(x, y, side, board);
         }
         return new Empty(x, y);
     }

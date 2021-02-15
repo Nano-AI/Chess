@@ -1,11 +1,12 @@
 import Engine.Board;
-import GUI.Pieces.ChessWindow;
+import GUI.BoardWindow;
 
 public class Main {
     public static void main(String[] args) throws Exception {
         Board engine = new Board();
-        engine.move_piece(6, 0, 4, 0);
+        engine.move_piece(7, 0, 0, 0);
         engine.print_board();
-        ChessWindow.main(args);
+        BoardWindow boardWindow = new BoardWindow(engine);
+        boardWindow.display();
     }
 }
