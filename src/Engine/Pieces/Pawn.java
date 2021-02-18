@@ -6,6 +6,7 @@ import java.util.List;
 
 public class Pawn extends Piece {
     public static boolean first_move;
+    public static final String photo_name = "Pawn.png";
 
     public Pawn(int x, int y, char side, Piece[][] board) {
         super(x, y, side, board);

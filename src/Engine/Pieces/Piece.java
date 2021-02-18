@@ -9,6 +9,7 @@ public abstract class Piece {
     public char side;
     public char piece;
     public Piece[][] board;
+    public static final String photo_name = null;
 
     public Piece(int x, int y, char side, Piece[][] board) {
         // This is the basic class for pieces in the chess board.

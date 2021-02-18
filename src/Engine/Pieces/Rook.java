@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Rook extends Piece {
+    public static final String photo_name = "Rook.png";
+
     public Rook(int x, int y, char side, Piece[][] board) {
         super(x, y, side, board);
         this.piece = 'r';
