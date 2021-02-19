@@ -80,7 +80,10 @@ public class GUIPiece extends JComponent {
 
             @Override
             public void mouseReleased(MouseEvent e) {
-                int[] calculated_spot = calculate_to_spot(e.getXOnScreen(), e.getYOnScreen());
+                int x = getX();
+                int y = getY();
+                int[] calculated_spot = calculate_to_spot(x, y);
+//                int[] calculated_spot = calculate_to_spot(e.getXOnScreen(), e.getYOnScreen());
                 reference.move_piece(x_index, y_index, calculated_spot[0], calculated_spot[1]);
                 reference.picked_piece(-1, -1);
                 reference.reset_drawing(true);
@@ -108,13 +111,21 @@ public class GUIPiece extends JComponent {
     }
 
     public int[] calculate_to_spot(int x, int y) {
+        if (x < 0)
+            x = 0;
+        if (y < 0)
+            y = 0;
+        // Round numbers to nearest multiple of box size for graze spots
+        // https://stackoverflow.com/questions/14196987/java-round-to-nearest-multiple-of-5-either-up-or-down
+        y = (box_height)*(Math.round(y / ((float) box_height)));
+        x = (box_width)*(Math.round(x / ((float) box_width)));
+
         int[] spots = new int[2];
-        float y_pos = (y/(float) box_height) - 2;;
-        float x_pos = ((x/(float) box_width) - reference.engine.board[0].length) + 1;
-        spots[0] = (int) Math.floor(y_pos);
-        spots[1] = (int) Math.floor(x_pos);
-        // spots[0] = (y/box_height) - 2;
-        // spots[1] = ((x/box_width) - reference.engine.board[0].length) + 1;
+
+        spots[0] = Math.floorDiv(y, box_height);
+        spots[1] = Math.floorDiv(x, box_width);
+
+        System.out.println(Arrays.toString(spots));
         return spots;
     }
 }

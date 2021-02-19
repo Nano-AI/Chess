@@ -90,7 +90,7 @@ public class BoardUI extends JLayeredPane {
 
         if (spots != null) {
             for (int[] cords : spots) {
-                gui_boxes[cords[1]][cords[0]].setBackground(Color.GREEN);
+                gui_boxes[cords[1]][cords[0]].setBackground(blend((cords[1] % 2 == 0) == (cords[0] % 2 == 0) ? Color.GRAY : Color.WHITE, Color.GREEN));
             }
         }
     }
@@ -111,6 +111,20 @@ public class BoardUI extends JLayeredPane {
     }
 
     public void move_piece(int x_index, int y_index, int to_x_index, int to_y_index) {
-        boolean output = engine.move_piece(x_index, y_index, to_x_index, to_y_index);
+        engine.move_piece(x_index, y_index, to_x_index, to_y_index);
+    }
+
+    public static Color blend(Color c0, Color c1) {
+        /* Code from here: http://www.java2s.com/Code/Java/2D-Graphics-GUI/Blendtwocolors.htm */
+        double totalAlpha = c0.getAlpha() + c1.getAlpha();
+        double weight0 = c0.getAlpha() / totalAlpha;
+        double weight1 = c1.getAlpha() / totalAlpha;
+
+        double r = weight0 * c0.getRed() + weight1 * c1.getRed();
+        double g = weight0 * c0.getGreen() + weight1 * c1.getGreen();
+        double b = weight0 * c0.getBlue() + weight1 * c1.getBlue();
+        double a = Math.max(c0.getAlpha(), c1.getAlpha());
+
+        return new Color((int) r, (int) g, (int) b, (int) a);
     }
 }
