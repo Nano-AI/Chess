@@ -40,4 +40,7 @@ public abstract class Piece {
     public String toString() {
         return String.valueOf((this.side == 'b') ? Character.toUpperCase(this.piece) : Character.toLowerCase(this.piece));
     }
+
+    // Anything extra that the class wants to do after being moved
+    public abstract void on_move(int to_x, int to_y);
 }

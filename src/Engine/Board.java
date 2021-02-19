@@ -55,12 +55,16 @@ public class Board {
         // This takes ARRAY coordinates
         // Get moves from piece
         List<int[]> spots = board[pieceX][pieceY].get_moves();
-
+        if (spots == null)
+            return false;
         // Check if the given coordinates are part of the given moves/spots
         for (int[] cords : spots) {
             if (cords[0] == toX && cords[1] == toY) {
                 board[toX][toY] = board[pieceX][pieceY];
                 board[pieceX][pieceY] = new Empty(toX, toY);
+                board[toX][toY].x = toX;
+                board[toX][toY].y = toY;
+                board[toX][toY].on_move(toX, toY);
                 return true;
             }
         }
@@ -76,12 +80,10 @@ public class Board {
         // Get piece from char
         // Black is upper case, white is lower case
         char side = (Character.isUpperCase(character)) ? 'b' : 'w';
-        switch (Character.toLowerCase(character)) {
-            case 'p':
-                return new Pawn(x, y, side, board);
-            case 'r':
-                return new Rook(x, y, side, board);
-        }
-        return new Empty(x, y);
+        return switch (Character.toLowerCase(character)) {
+            case 'p' -> new Pawn(x, y, side, board);
+            case 'r' -> new Rook(x, y, side, board);
+            default -> new Empty(x, y);
+        };
     }
 }

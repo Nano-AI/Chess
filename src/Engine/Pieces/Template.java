@@ -18,4 +18,7 @@ public class Template extends Piece {
     public String get_icon() {
         return "";
     }
+
+    @Override
+    public void on_move(int to_x, int to_y) { }
 }

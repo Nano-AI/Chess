@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Pawn extends Piece {
-    public static boolean first_move;
+    public boolean first_move;
     public static final String photo_name = "Pawn.png";
 
     public Pawn(int x, int y, char side, Piece[][] board) {
@@ -46,6 +46,11 @@ public class Pawn extends Piece {
     @Override
     public String get_icon() {
         return photo_name;
+    }
+
+    @Override
+    public void on_move(int to_x, int to_y) {
+        first_move = false;
     }
 }
 
