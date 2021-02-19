@@ -42,6 +42,11 @@ public class Pawn extends Piece {
         }
         return moves;
     }
+
+    @Override
+    public String get_icon() {
+        return photo_name;
+    }
 }
 
 /*

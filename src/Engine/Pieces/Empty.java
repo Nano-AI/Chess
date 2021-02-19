@@ -13,6 +13,11 @@ public class Empty extends Piece {
         return null;
     }
 
+    @Override
+    public String get_icon() {
+        return "";
+    }
+
     public boolean can_move(int x, int y) {
         return false;
     }

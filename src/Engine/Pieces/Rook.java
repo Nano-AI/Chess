@@ -57,4 +57,9 @@ public class Rook extends Piece {
 
         return spots;
     }
+
+    @Override
+    public String get_icon() {
+        return photo_name;
+    }
 }

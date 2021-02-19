@@ -13,4 +13,9 @@ public class Template extends Piece {
     public List<int[]> get_moves() {
         return null;
     }
+
+    @Override
+    public String get_icon() {
+        return "";
+    }
 }
