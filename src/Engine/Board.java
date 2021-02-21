@@ -7,19 +7,23 @@ import java.util.List;
 
 public class Board {
     public static final String board_setup_str = "" +
-            "R . . . . . . R" +
+            "R N B K Q B N R" +
             "P P P P P P P P" +
             ". . . . . . . ." +
             ". . . . . . . ." +
             ". . . . . . . ." +
             ". . . . . . . ." +
             "p p p p p p p p" +
-            "r . . . . . . r";
+            "r n b k q b n r";
 
     public static int board_height = 8;
     public static int board_width = 8;
+    private boolean white_king = false;
+    private boolean black_king = false;
 
     public Piece[][] board;
+
+    private char turn = 'w';
 
     public Board() throws Exception {
         // Declaring board variables
@@ -40,6 +44,9 @@ public class Board {
                 board[columnCount][rowCount] = get_piece(column[rowCount], columnCount, rowCount);
             }
         }
+
+        if (!white_king || !black_king)
+            throw new Exception("The board is missing a white and/or black king!");
     }
 
     public void print_board() {
@@ -51,9 +58,13 @@ public class Board {
         }
     }
 
-    public boolean move_piece(int pieceX, int pieceY, int toX, int toY) {
+    public boolean move_piece(int pieceX, int pieceY, int toX, int toY) throws Exception {
         // This takes ARRAY coordinates
         // Get moves from piece
+        if (board[toX][toY] instanceof King)
+            return false;
+        if (board[pieceX][pieceY].side != turn)
+            return false;
         List<int[]> spots = board[pieceX][pieceY].get_moves();
         if (spots == null)
             return false;
@@ -65,6 +76,7 @@ public class Board {
                 board[toX][toY].x = toX;
                 board[toX][toY].y = toY;
                 board[toX][toY].on_move(toX, toY);
+                turn = (turn == 'b') ? 'w' : 'b';
                 return true;
             }
         }
@@ -76,14 +88,47 @@ public class Board {
         return new int[]{y, board_width - x - 1};
     }
 
-    private Piece get_piece(char character, int x, int y) {
+    private Piece get_piece(char character, int x, int y) throws Exception {
         // Get piece from char
         // Black is upper case, white is lower case
         char side = (Character.isUpperCase(character)) ? 'b' : 'w';
+        switch (Character.toLowerCase(character)) {
+            case 'p':
+                return new Pawn(x, y, side, board);
+            case 'r':
+                return new Rook(x, y, side, board);
+            case 'b':
+                return new Bishop(x, y, side, board);
+            case 'n':
+                return new Knight(x, y, side, board);
+            case 'q':
+                return new Queen(x, y, side, board);
+            case 'k':
+                if (side == 'b') {
+                    if (black_king)
+                        throw new Exception("More than 1 black king is trying to be placed on the chess board.");
+                    black_king = true;
+                }
+                if (side == 'w') {
+                    if (white_king)
+                        throw new Exception("More than 1 white king is trying to be placed on the chess board.");
+                    white_king = true;
+                }
+
+                return new King(x, y, side, board);
+        }
+        return new Empty(x, y);
+        /*
+        R.I.P I can't use this because of my Java version ;-;
         return switch (Character.toLowerCase(character)) {
             case 'p' -> new Pawn(x, y, side, board);
             case 'r' -> new Rook(x, y, side, board);
             default -> new Empty(x, y);
         };
+         */
+    }
+
+    public char get_turn() {
+        return turn;
     }
 }

@@ -19,7 +19,8 @@ public class Rook extends Piece {
             for (int i = this.x - 1; i >= 0; i--) {
                 if (board[i][this.y].side == this.side)
                     break;
-                spots.add(new int[] {i, this.y});
+                if (!((board[i][this.y]) instanceof King))
+                    spots.add(new int[] {i, this.y});
                 if (!(board[i][this.y] instanceof Empty))
                     break;
             }
@@ -29,7 +30,8 @@ public class Rook extends Piece {
             for (int i = this.x + 1; i < board.length; i++) {
                 if (board[i][this.y].side == this.side)
                     break;
-                spots.add(new int[] {i, this.y});
+                if (!((board[i][this.y]) instanceof King))
+                    spots.add(new int[] {i, this.y});
                 if (!(board[i][this.y] instanceof Empty))
                     break;
             }
@@ -39,7 +41,8 @@ public class Rook extends Piece {
             for (int i = this.y + 1; i < board.length; i++) {
                 if (board[this.x][i].side == this.side)
                     break;
-                spots.add(new int[] {this.x, i});
+                if (!((board[this.x][i]) instanceof King))
+                    spots.add(new int[] {this.x, i});
                 if (!(board[this.x][i] instanceof Empty))
                     break;
             }
@@ -50,7 +53,8 @@ public class Rook extends Piece {
             for (int i = this.y - 1; i >= 0; i--) {
                 if (board[this.x][i].side == this.side)
                     break;
-                spots.add(new int[] {this.x, i});
+                if (!((board[this.x][i]) instanceof King))
+                    spots.add(new int[] {this.x, i});
                 if (!(board[this.x][i] instanceof Empty))
                     break;
             }

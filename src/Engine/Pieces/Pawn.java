@@ -23,13 +23,15 @@ public class Pawn extends Piece {
         // Checks if piece above it one unit and right of it one unit isn't an empty piece,
         // and if the pieces side and the current pieces side is not the same, add the spot to the possible moves.
         if (this.x + up >= 0 && this.x + up < board.length && this.y + 1 < this.board[this.y].length &&
-                !(board[this.x + up][this.y + 1] instanceof Empty) && board[this.x + up][this.y + 1].side != this.side)
+                !(board[this.x + up][this.y + 1] instanceof Empty) && board[this.x + up][this.y + 1].side != this.side &&
+                !(board[this.x + up][this.y + 1] instanceof King))
             moves.add(new int[]{this.x + up, this.y + 1});
 
         // Checks if piece above it one unit and left of it one unit isn't an empty piece,
         // and if the pieces side and the current pieces side is not the same, add the spot to the possible moves.
         if (this.x + up >= 0 && this.x + up < board.length && this.y - 1 >= 0 &&
-                !(board[this.x + up][this.y - 1] instanceof Empty) && board[this.x + up][this.y - 1].side != this.side)
+                !(board[this.x + up][this.y - 1] instanceof Empty) && !(board[this.x + up][this.y + 1] instanceof King)
+                && board[this.x + up][this.y - 1].side != this.side)
             moves.add(new int[]{this.x + up, this.y - 1});
 
         // If the spot above the current piece is empty, then you can move up there.
@@ -40,6 +42,7 @@ public class Pawn extends Piece {
             if (this.x + (up * 2) < this.board.length && first_move && board[this.x + (up * 2)][this.y] instanceof Empty)
                 moves.add(new int[]{this.x + (up * 2), this.y});
         }
+
         return moves;
     }
 

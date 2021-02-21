@@ -69,24 +69,32 @@ public class GUIPiece extends JComponent {
 
             @Override
             public void mousePressed(MouseEvent e) {
-                reference.picked_piece(x_index, y_index);
+                if (reference.engine.get_turn() == reference.engine.board[x_index][y_index].side) {
+                    reference.picked_piece(x_index, y_index);
 
-                screenX = e.getXOnScreen();
-                screenY = e.getYOnScreen();
+                    screenX = e.getXOnScreen();
+                    screenY = e.getYOnScreen();
 
-                myX = getX();
-                myY = getY();
+                    myX = getX();
+                    myY = getY();
+                }
             }
 
             @Override
             public void mouseReleased(MouseEvent e) {
-                int x = getX();
-                int y = getY();
-                int[] calculated_spot = calculate_to_spot(x, y);
+                if (reference.engine.get_turn() == reference.engine.board[x_index][y_index].side) {
+                    int x = getX();
+                    int y = getY();
+                    int[] calculated_spot = calculate_to_spot(x, y);
 //                int[] calculated_spot = calculate_to_spot(e.getXOnScreen(), e.getYOnScreen());
-                reference.move_piece(x_index, y_index, calculated_spot[0], calculated_spot[1]);
-                reference.picked_piece(-1, -1);
-                reference.reset_drawing(true);
+                    try {
+                        reference.move_piece(x_index, y_index, calculated_spot[0], calculated_spot[1]);
+                    } catch (Exception exception) {
+                        exception.printStackTrace();
+                    }
+                    reference.picked_piece(-1, -1);
+                    reference.reset_drawing(true);
+                }
             }
 
             @Override
@@ -99,10 +107,12 @@ public class GUIPiece extends JComponent {
         addMouseMotionListener(new MouseMotionListener() {
             @Override
             public void mouseDragged(MouseEvent e) {
-                int deltaX = e.getXOnScreen() - screenX;
-                int deltaY = e.getYOnScreen() - screenY;
+                if (reference.engine.get_turn() == reference.engine.board[x_index][y_index].side) {
+                    int deltaX = e.getXOnScreen() - screenX;
+                    int deltaY = e.getYOnScreen() - screenY;
 
-                setLocation(myX + deltaX, myY + deltaY);
+                    setLocation(myX + deltaX, myY + deltaY);
+                }
             }
 
             @Override

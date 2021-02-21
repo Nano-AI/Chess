@@ -110,7 +110,7 @@ public class BoardUI extends JLayeredPane {
         reset_drawing(false);
     }
 
-    public void move_piece(int x_index, int y_index, int to_x_index, int to_y_index) {
+    public void move_piece(int x_index, int y_index, int to_x_index, int to_y_index) throws Exception {
         engine.move_piece(x_index, y_index, to_x_index, to_y_index);
     }
 
