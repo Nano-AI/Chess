@@ -9,7 +9,7 @@ public class Empty extends Piece {
     }
 
     @Override
-    public List<int[]> get_moves() {
+    public List<int[]> get_moves(boolean... king_check) throws CloneNotSupportedException {
         return null;
     }
 
@@ -20,6 +20,11 @@ public class Empty extends Piece {
 
     @Override
     public void on_move(int to_x, int to_y) { }
+
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        return new Empty(x, y);
+    }
 
     public boolean can_move(int x, int y) {
         return false;

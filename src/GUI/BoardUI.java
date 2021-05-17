@@ -85,8 +85,13 @@ public class BoardUI extends JLayeredPane {
 
         List<int[]> spots = null;
 
-        if (selected_x_index != -1 && selected_y_index != -1)
-            spots = engine.board[selected_y_index][selected_x_index].get_moves();
+        if (selected_x_index != -1 && selected_y_index != -1) {
+            try {
+                spots = engine.board[selected_y_index][selected_x_index].get_moves();
+            } catch (CloneNotSupportedException e) {
+                e.printStackTrace();
+            }
+        }
 
         if (spots != null) {
             for (int[] cords : spots) {

@@ -2,24 +2,34 @@ package Engine;
 
 import Engine.Pieces.*;
 
-import java.util.Arrays;
 import java.util.List;
 
 public class Board {
     public static final String board_setup_str = "" +
-            "R N B K Q B N R" +
+            "R N B Q K B N R" +
             "P P P P P P P P" +
             ". . . . . . . ." +
             ". . . . . . . ." +
             ". . . . . . . ." +
             ". . . . . . . ." +
             "p p p p p p p p" +
-            "r n b k q b n r";
+            "r n b q k b n r";
+//    public static final String board_setup_str = "" +
+//            ". . . . K . . ." +
+//            ". . . . Q . . ." +
+//            ". . . . . . . ." +
+//            ". . . . . . . ." +
+//            ". . . . . . . ." +
+//            ". . . . . . . ." +
+//            ". . . . n . . ." +
+//            ". . . . k . . .";
 
     public static int board_height = 8;
     public static int board_width = 8;
-    private boolean white_king = false;
-    private boolean black_king = false;
+    private boolean white_king_exists = false;
+    private boolean black_king_exists = false;
+    public King white_king;
+    public King black_king;
 
     public Piece[][] board;
 
@@ -45,7 +55,7 @@ public class Board {
             }
         }
 
-        if (!white_king || !black_king)
+        if (!white_king_exists || !black_king_exists)
             throw new Exception("The board is missing a white and/or black king!");
     }
 
@@ -61,6 +71,7 @@ public class Board {
     public boolean move_piece(int pieceX, int pieceY, int toX, int toY) throws Exception {
         // This takes ARRAY coordinates
         // Get moves from piece
+//        System.out.printf("White king: %b Black king: %b\n", white_king.in_check(), black_king.in_check());
         if (board[toX][toY] instanceof King)
             return false;
         if (board[pieceX][pieceY].side != turn)
@@ -68,6 +79,7 @@ public class Board {
         List<int[]> spots = board[pieceX][pieceY].get_moves();
         if (spots == null)
             return false;
+
         // Check if the given coordinates are part of the given moves/spots
         for (int[] cords : spots) {
             if (cords[0] == toX && cords[1] == toY) {
@@ -80,12 +92,8 @@ public class Board {
                 return true;
             }
         }
-        return false;
-    }
 
-    public static int[] array_cords_to_board_cords(int x, int y) {
-        // This converts array positions to actual chess positions
-        return new int[]{y, board_width - x - 1};
+        return false;
     }
 
     private Piece get_piece(char character, int x, int y) throws Exception {
@@ -94,28 +102,32 @@ public class Board {
         char side = (Character.isUpperCase(character)) ? 'b' : 'w';
         switch (Character.toLowerCase(character)) {
             case 'p':
-                return new Pawn(x, y, side, board);
+                return new Pawn(x, y, side, board, this);
             case 'r':
-                return new Rook(x, y, side, board);
+                return new Rook(x, y, side, board, this);
             case 'b':
-                return new Bishop(x, y, side, board);
+                return new Bishop(x, y, side, board, this);
             case 'n':
-                return new Knight(x, y, side, board);
+                return new Knight(x, y, side, board, this);
             case 'q':
-                return new Queen(x, y, side, board);
+                return new Queen(x, y, side, board, this);
             case 'k':
+                King king = new King(x, y, side, board, this);
                 if (side == 'b') {
-                    if (black_king)
+                    if (black_king_exists)
                         throw new Exception("More than 1 black king is trying to be placed on the chess board.");
-                    black_king = true;
+                    black_king_exists = true;
+                    black_king = king;
                 }
-                if (side == 'w') {
-                    if (white_king)
+                else if (side == 'w') {
+                    if (white_king_exists)
                         throw new Exception("More than 1 white king is trying to be placed on the chess board.");
-                    white_king = true;
-                }
+                    white_king_exists = true;
+                    white_king = king;
+                } else
+                    throw new Exception("King has unknown side " + side);
 
-                return new King(x, y, side, board);
+                return king;
         }
         return new Empty(x, y);
         /*

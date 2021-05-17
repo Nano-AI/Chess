@@ -1,18 +1,20 @@
 package Engine.Pieces;
 
+import Engine.Board;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class Rook extends Piece {
     public static final String photo_name = "Rook.png";
 
-    public Rook(int x, int y, char side, Piece[][] board) {
-        super(x, y, side, board);
+    public Rook(int x, int y, char side, Piece[][] board, Board reference) {
+        super(x, y, side, board, reference);
         this.piece = 'r';
     }
 
     @Override
-    public List<int[]> get_moves() {
+    public List<int[]> get_moves(boolean... king_check) throws CloneNotSupportedException {
         List<int[]> spots = new ArrayList<>();
         // Iterating all spots above the piece
         if (this.x - 1 >= 0) {
@@ -70,4 +72,9 @@ public class Rook extends Piece {
 
     @Override
     public void on_move(int to_x, int to_y) { }
+
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        return new Rook(x, y, side, board, reference);
+    }
 }

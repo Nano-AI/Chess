@@ -1,18 +1,20 @@
 package Engine.Pieces;
 
+import Engine.Board;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class Bishop extends Piece {
     public static final String photo_name = "Bishop.png";
-    public Bishop(int x, int y, char side, Piece[][] board) {
+    public Bishop(int x, int y, char side, Piece[][] board, Board reference) {
         /*When reading an array, x is the first one. Example: board[x][y] (the roles are switched)*/
-        super(x, y, side, board);
+        super(x, y, side, board, reference);
         this.piece = 'b';
     }
 
     @Override
-    public List<int[]> get_moves() {
+    public List<int[]> get_moves(boolean... king_check) throws CloneNotSupportedException {
         List<int[]> spots = new ArrayList<>();
 
         if (this.x - 1 >= 0) {
@@ -70,5 +72,10 @@ public class Bishop extends Piece {
     @Override
     public void on_move(int to_x, int to_y) {
 
+    }
+
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        return new Bishop(x, y, side, board, reference);
     }
 }

@@ -2,6 +2,7 @@ package Engine.Pieces;
 
 import Engine.Board;
 
+import java.util.Arrays;
 import java.util.List;
 
 public abstract class Piece {
@@ -10,13 +11,15 @@ public abstract class Piece {
     public char piece;
     public Piece[][] board;
     public static String photo_name;
+    public Board reference;
 
-    public Piece(int x, int y, char side, Piece[][] board) {
+    public Piece(int x, int y, char side, Piece[][] board, Board reference) {
         // This is the basic class for pieces in the chess board.
         this.x = x;
         this.y = y;
         this.side = side;
         this.board = board;
+
     }
 
     public Piece(int x, int y) {
@@ -33,7 +36,7 @@ public abstract class Piece {
 //        return can_move(cords[0], cords[1]);
 //    }
 
-    public abstract List<int[]> get_moves();
+    public abstract List<int[]> get_moves(boolean... king_check) throws CloneNotSupportedException;
     public abstract String get_icon();
 
     @Override
@@ -43,4 +46,12 @@ public abstract class Piece {
 
     // Anything extra that the class wants to do after being moved
     public abstract void on_move(int to_x, int to_y);
+
+    protected abstract Object clone() throws CloneNotSupportedException;
+
+    public void print_moves() throws CloneNotSupportedException {
+        for (int[] item : get_moves()) {
+            System.out.println(Arrays.toString(item));
+        }
+    }
 }
